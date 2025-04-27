@@ -1,9 +1,20 @@
 const express = "express";
 import { Router } from "express";
-import { getAllBlocks } from "../controllers/posts";
+import {
+  getAllPosts,
+  getSinglePost,
+  updatePost,
+  createPost,
+  deletePost,
+} from "../controllers/posts.js";
 
 const router = Router();
 
-router.get("/", getAllBlocks);
+// api
+router.get("/posts", getAllPosts);
+router.get("/posts/:id", getSinglePost);
+router.post("/create", createPost);
+router.put("/update/:id", updatePost);
+router.delete("/delete/:id", deletePost);
 
-export default Router;
+export default router;
