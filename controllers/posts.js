@@ -1,5 +1,12 @@
+import Posts from "../models/posts.js";
+
 export async function getAllPosts(req, res) {
-  res.send("hello");
+  try {
+    const Allposts = await Posts.find().populate({ path: "title" });
+    console.log(Allposts);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 export async function getSinglePost(req, res) {
