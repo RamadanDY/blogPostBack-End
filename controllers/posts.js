@@ -126,6 +126,40 @@ export async function updatePost(req, res, next) {
 //   }
 // }
 
-export async function deletePost(req, res) {
-  res.send("Delete post");
+// export async function deletePost(req, res) {
+//   const { id } = req.params;
+//   if (!id) return next(createHttpErrors(400, "no id found"));
+//   console.log(id);
+
+//   try {
+//     const postId = Posts.findByIdAndDelete(id);
+//     if (!postId) return next(createHttpErrors(400, "post couldnt delete"));
+//     return res
+//       .status(200)
+//       .json({ message: "Post deleted successfully", post: postId });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+export async function deletePost(req, res, next) {
+  const { id } = req.params;
+  if (!id) return next(createHttpErrors(400, "No ID found"));
+
+  try {
+    const postId = await Posts.findByIdAndDelete(id);
+    if (!postId) return next(createHttpErrors(404, "Post couldn't be deleted"));
+
+    return res.status(200).json({
+      message: "Post deleted successfully",
+      post: {
+        _id: postId._id,
+        title: postId.title,
+        slug: postId.slug,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return next(createHttpErrors(500, "Internal server error"));
+  }
 }
