@@ -7,12 +7,12 @@ const postSchema = new Schema(
       type: String,
       required: [true, "Title is required"],
       trim: true,
-      // maxlength: [200, "Title cannot exceed 200 characters"],
+      maxlength: [200, "Title cannot exceed 200 characters"],
     },
     excerpt: {
       type: String,
       trim: true,
-      // maxlength: [500, "Excerpt cannot exceed 500 characters"],
+      maxlength: [500, "Excerpt cannot exceed 500 characters"],
     },
     content: {
       type: String,

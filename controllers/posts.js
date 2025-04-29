@@ -56,11 +56,11 @@ export async function getSinglePost(req, res, next) {
 }
 
 export async function createPost(req, res, next) {
-  const { title } = req.body;
-  if (!title) return next(404, "no id found");
+  const { title, content, author, slug } = req.body;
+  if ((!title, !content, !author, !slug)) return next(404, "no id found");
 
   try {
-    const newPost = new Posts({ title });
+    const newPost = new Posts({ title, content, author, slug });
     await newPost.save();
     // 201 is for successfull resoiurce creation
     return res.status(201).json(newPost);
