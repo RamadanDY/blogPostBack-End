@@ -69,9 +69,62 @@ export async function createPost(req, res, next) {
   }
 }
 
-export async function updatePost(req, res) {
-  res.send("hmmnbhh");
+export async function updatePost(req, res, next) {
+  const { id } = req.params;
+
+  if (!id) {
+    return next(createHttpErrors(404, "No ID found"));
+  }
+
+  try {
+    // Fetch the post to update
+    const postToUpdate = await Posts.findById(id);
+
+    if (!postToUpdate) {
+      return next(createHttpErrors(404, "Post not found"));
+    }
+
+    // Update fields (ensure req.body contains the data you want to update)
+    postToUpdate.title = req.body.title || postToUpdate.title;
+    postToUpdate.excerpt = req.body.excerpt || postToUpdate.excerpt;
+    postToUpdate.content = req.body.content || postToUpdate.content;
+    postToUpdate.category = req.body.category || postToUpdate.category;
+    postToUpdate.status = req.body.status || postToUpdate.status;
+    postToUpdate.slug = req.body.slug || postToUpdate.slug;
+
+    // Save the updated post
+    await postToUpdate.save();
+
+    return res.status(200).json(postToUpdate);
+  } catch (error) {
+    console.error(error);
+    return next(createHttpErrors(500, "Server error"));
+  }
 }
+
+// export async function updatePost(req, res, next) {
+//   const { id } = req.params;
+//   if (!id) return next(createHttpErrors(404, "no id found"));
+
+//   try {
+//     const postToUpdate = Posts.findById(id);
+
+//     // Update the fields of the post with the new data from req.body
+//     postToUpdate.title = req.body.title || postToUpdate.title;
+//     postToUpdate.excerpt = req.body.excerpt || postToUpdate.excerpt;
+//     postToUpdate.content = req.body.content || postToUpdate.content;
+//     postToUpdate.category = req.body.category || postToUpdate.category;
+//     postToUpdate.status = req.body.status || postToUpdate.status;
+//     postToUpdate.slug = req.body.slug || postToUpdate.slug;
+//     // Add any other fields you want to update
+
+//     await postToUpdate.save();
+//     return res.status(201).json(postToUpdate);
+//   } catch (error) {
+//     console.log(error);
+//     next(createHttpErrors(500, "Server error"));
+//   }
+// }
 
 export async function deletePost(req, res) {
   res.send("Delete post");
