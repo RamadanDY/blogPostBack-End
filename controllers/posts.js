@@ -165,3 +165,7 @@ export async function deletePost(req, res, next) {
     return next(createHttpErrors(500, "Internal server error"));
   }
 }
+
+export async function searchPosts(req, res, next) {
+  res.send("hello");
+}

@@ -6,6 +6,7 @@ import {
   updatePost,
   createPost,
   deletePost,
+  searchPosts,
 } from "../controllers/posts.js";
 
 const router = Router();
@@ -16,5 +17,6 @@ router.get("/posts/:id", getSinglePost);
 router.post("/create", createPost);
 router.put("/update/:id", updatePost);
 router.delete("/delete/:id", deletePost);
+router.get("/post/search", searchPosts);
 
 export default router;
