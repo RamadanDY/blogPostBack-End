@@ -167,5 +167,11 @@ export async function deletePost(req, res, next) {
 }
 
 export async function searchPosts(req, res, next) {
-  res.send("hello");
+  const { query } = req.params;
+  if (!query) return next(createHttpErrors(404, "ID not found"));
+  try {
+    const searchPost = Posts.findById();
+  } catch (error) {
+    console.log(error);
+  }
 }
