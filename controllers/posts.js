@@ -167,10 +167,20 @@ export async function deletePost(req, res, next) {
 }
 
 export async function searchPosts(req, res, next) {
-  const { query } = req.params;
-  if (!query) return next(createHttpErrors(404, "ID not found"));
+  // this is how the search query looks like ie the route
+  /// e.g., /search?query=javascript closures
+  const { query } = req.query;
+  if (!query) return next(createHttpErrors(404, "Query parameter is required"));
   try {
-    const searchPost = Posts.findById();
+    // Perform text search
+    const posts = await Posts.find(
+      { $text: { $search: query } },
+      { score: { $meta: "textScore" } } // Include relevance score
+    )
+      .sort({ score: { $meta: "textScore" } }) // Sort by relevance
+      .limit(10); // Limit results
+
+    res.json(posts);
   } catch (error) {
     console.log(error);
   }
