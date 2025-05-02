@@ -62,3 +62,13 @@ const postSchema = new Schema(
 const posts = model("posts", postSchema);
 
 export default posts;
+// {
+//   "title": "Understanding JavaScript Closures",
+//   "excerpt": "This post dives into how closures work in JavaScript and why they're useful.",
+//   "content": "Closures are a fundamental concept in JavaScript. They allow functions to access variables from an enclosing scope, even after that scope has returned...",
+//   "author": "66337b1c2d8f8f1f2b9a5a6c",
+//   "tags": ["JavaScript", "Programming", "Closures"],
+//   "category": "Web Development",
+//   "status": "published",
+//   "slug": "understanding-javascript-closures"
+// }

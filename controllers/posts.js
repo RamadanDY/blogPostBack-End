@@ -63,7 +63,9 @@ export async function createPost(req, res, next) {
     const newPost = new Posts({ title, content, author, slug });
     await newPost.save();
     // 201 is for successfull resoiurce creation
-    return res.status(201).json(newPost);
+    return res
+      .status(201)
+      .json({ message: "Poist has been created ", newPost });
   } catch (error) {
     console.log(error);
   }
