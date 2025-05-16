@@ -29,7 +29,7 @@ export async function register(req, res, next) {
 export async function login(req, res, next) {
   try {
     const { username, password } = req.body;
-    const user = await UserSchema.findone({ username });
+    const user = await UserSchema.findOne({ username });
     if (!user) {
       return res
         .status(404)
@@ -41,9 +41,13 @@ export async function login(req, res, next) {
       return res.status(400).json({ message: `invalid credentials` });
     }
     // lets generate a token and give it back to the user
-    const token = jwt({ id: user._id, role: user.role }, process.env.jwt, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
     res.status(200).json({
       message: `user logged in successfully`,
       token,
