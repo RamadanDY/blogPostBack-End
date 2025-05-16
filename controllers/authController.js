@@ -58,3 +58,15 @@ export async function login(req, res, next) {
     console.log(error);
   }
 }
+
+export async function admin() {
+  console.log("hello");
+}
+
+export async function user() {
+  console.log("hello");
+}
+
+export async function manager() {
+  console.log("hello");
+}
