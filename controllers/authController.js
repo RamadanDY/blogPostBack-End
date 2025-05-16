@@ -2,7 +2,7 @@ import UserSchema from "../models/users.js";
 // this is used to harsh passwords ie bcrypt
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-export async function register(req, res, nest) {
+export async function register(req, res, next) {
   try {
     //   res.send("helo");
     const { username, password, role } = req.body;
@@ -21,7 +21,8 @@ export async function register(req, res, nest) {
       .status(201)
       .json({ message: `User registered with the username ${username}` });
   } catch (error) {
-    res.status(500).json({ message: `smt went wrong` });
+    res.status(500).json(error, { message: `smt went wrong` });
+    console.log(error);
   }
 }
 
@@ -37,9 +38,19 @@ export async function login(req, res, next) {
     // lets match the passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: `invalid credentials ` });
+      return res.status(400).json({ message: `invalid credentials` });
     }
-
-    const token = jwt({ id: user._id, role: user.role }, process.env.jwt);
-  } catch (error) {}
+    // lets generate a token and give it back to the user
+    const token = jwt({ id: user._id, role: user.role }, process.env.jwt, {
+      expiresIn: "1h",
+    });
+    res.status(200).json({
+      message: `user logged in successfully`,
+      token,
+    });
+    // lets send the token to the user
+  } catch (error) {
+    res.status(500).json({ message: `smt went wrong` });
+    console.log(error);
+  }
 }
