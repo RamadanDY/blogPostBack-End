@@ -4,7 +4,7 @@ const authorizeRole = (...allowedRoles) => {
 
     if (!allowedRoles.includes(req.user.role)) {
       return res.status(403).json({
-        message: "Access denied. You do not have the required role.",
+        message: "Access denied. You do not have the required role",
       });
     }
 
