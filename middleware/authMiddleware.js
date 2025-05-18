@@ -4,7 +4,7 @@ const verifyToken = (req, res, next) => {
   let token;
   let authHeader = req.headers.Authorization || req.headers.authorization;
   if (authHeader && authHeader.startsWith("Bearer")) {
-    token = authHeader.split(" ")(1);
+    token = authHeader.split(" ")[1];
 
     if (!token) {
       return res.status(401).json({
@@ -14,7 +14,8 @@ const verifyToken = (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decoded; // attach the decoded token to the request object
-      console.log("the decoded user is:", decoded);
+      console.log("the decoded user is:", req.user);
+      next(); // call the next middleware or route handler
     } catch (error) {
       return res.status(401).json({
         message: "Unauthorized access, invalid token",
