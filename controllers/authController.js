@@ -60,13 +60,13 @@ export async function login(req, res, next) {
 }
 
 export async function admin() {
-  console.log("hello");
+  console.log("hello admin");
 }
 
 export async function user() {
-  console.log("hello");
+  console.log("hello user");
 }
 
 export async function manager() {
-  console.log("hello");
+  console.log("hello manager");
 }

@@ -3,12 +3,27 @@ import jwt from "jsonwebtoken";
 const verifyToken = (req, res, next) => {
   let token;
   let authHeader = req.headers.Authorization || req.headers.authorization;
-  if (authHeader && authHeader.startWith("Bearer")) {
+  if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")(1);
+
+    if (!token) {
+      return res.status(401).json({
+        message: "Unauthorized  access, token is missing",
+      });
+    }
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded; // attach the decoded token to the request object
+      console.log("the decoded user is:", decoded);
+    } catch (error) {
+      return res.status(401).json({
+        message: "Unauthorized access, invalid token",
+      });
+    }
   }
 };
 
-module.export = verifyToken;
+export default verifyToken;
 // this is a middleware that will make the routed protected by authentivcating the used based on the token that we receive after
 //it will intercept the token and check if the
 // Middleware in authentication is used to protect routes and
